@@ -18,6 +18,7 @@ import pymongo
 
 def update_topics(mongo_collection, name, topics):
     """
+    Updates school with name `name` topics to `topics`
     """
     mongo_collection.UpdateMany(
             {"name": name},
