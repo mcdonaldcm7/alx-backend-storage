@@ -20,7 +20,7 @@ def update_topics(mongo_collection, name, topics):
     """
     Updates school with name `name` topics to `topics`
     """
-    return mongo_collection.UpdateMany(
+    return mongo_collection.update_many(
             {"name": name},
             {"$set": {"topics": topics}},
             upsert: True
