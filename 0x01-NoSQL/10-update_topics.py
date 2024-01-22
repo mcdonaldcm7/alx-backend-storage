@@ -20,8 +20,9 @@ def update_topics(mongo_collection, name, topics):
     """
     Updates school with name `name` topics to `topics`
     """
-    return mongo_collection.update_many(
+    _id = mongo_collection.update_many(
             {"name": name},
             {"$set": {"topics": topics}},
-            upsert: True
-            ).upserted_id
+            upsert=True
+            )
+    return (_id.upserted_id)
