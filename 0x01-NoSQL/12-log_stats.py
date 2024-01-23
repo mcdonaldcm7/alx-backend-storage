@@ -45,9 +45,9 @@ if __name__ == "__main__":
     for m in method:
         print("\tmethod ", end="")
         if m in method_count:
-            print("{}:\t{}".format(m, method_count[m]))
+            print("{}: {}".format(m, method_count[m]))
         else:
-            print("{}:\t0".format(m))
+            print("{}: 0".format(m))
 
     query = [
             {'$match': {"path": "/status"}},
