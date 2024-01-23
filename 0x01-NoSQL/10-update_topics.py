@@ -14,15 +14,16 @@ the name:
     school
 """
 import pymongo
+from typing import List
 
 
-def update_topics(mongo_collection, name, topics):
+def update_topics(mongo_collection: pymongo.Collection, name: str,
+                  topics: List[str]):
     """
     Updates school with name `name` topics to `topics`
     """
-    _id = mongo_collection.update_many(
-            {"name": name},
-            {"$set": {"topics": topics}},
-            upsert=True
-            )
+    _id = mongo_collection.update_many({"name": name},
+                                       {"$set": {"topics": topics}},
+                                       upsert=True
+                                       )
     return (_id.upserted_id)
