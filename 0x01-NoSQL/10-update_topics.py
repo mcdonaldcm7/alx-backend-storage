@@ -14,11 +14,9 @@ the name:
     school
 """
 import pymongo
-from typing import List
 
 
-def update_topics(mongo_collection: pymongo.Collection, name: str,
-                  topics: List[str]):
+def update_topics(mongo_collection, name, topics):
     """
     Updates school with name `name` topics to `topics`
     """
