@@ -23,7 +23,8 @@ def top_students(mongo_collection):
             {'$unwind': '$topics'},
             {
                 '$group': {
-                    '_id': '$name',
+                    '_id': '$_id',
+                    'name': {'$first': '$name'},
                     "averageScore": {'$avg': "$topics.score"}
                     }
                 },
