@@ -37,7 +37,7 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key, fn: Optional[Callable[[]]]) -> Union[Any, None]:
+    def get(self, key, fn=None) -> Union[Any, None]:
         """
         Returns the value associated with key (if any), after converting it to
         the appropriate type using fn (if provided)
