@@ -53,7 +53,7 @@ def replay(method: Callable) -> None:
     method_name = method.__qualname__
     key_input = "{}:inputs".format(method_name)
     key_output = "{}:outputs".format(method_name)
-    cache = fn.__self__
+    cache = method.__self__
     count = cache.get_int(key_input.split(":")[0])
     print("{} was called {} times:".format(method_name, count))
     for inp, out in zip(cache._redis.lrange(key_input, 0, -1),
