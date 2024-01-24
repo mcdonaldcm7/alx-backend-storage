@@ -24,6 +24,7 @@ import requests
 import redis
 from functools import wraps
 from datetime import timedelta
+from typing import Callable
 
 
 Cache = __import__('exercise').Cache
@@ -32,12 +33,12 @@ Cache = __import__('exercise').Cache
 c = Cache()
 
 
-def url_calls(method):
+def url_calls(method: Callable) -> Callable:
     """
     Decorator function to count calls to a 'url'
     """
     @wraps(method)
-    def wrapper(url):
+    def wrapper(url: str) -> Callable:
         """
         URL Counter
         """
