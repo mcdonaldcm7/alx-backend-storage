@@ -56,7 +56,7 @@ def get_page(url: str) -> str:
     if cache.exists(count_key):
         count = cache.get(count_key)
 
-    key = "{}:{}".format(count, url)
+    key = "{}:{{{}}}".format(count, url)
     if cache.exists(key):
         return cache.get(key).decode('utf-8')
 
