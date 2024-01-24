@@ -17,6 +17,7 @@ Type-annotate 'store' correctly. Remember that 'data' can be a 'str', 'bytes',
 """
 import redis
 import uuid
+from typing import Union
 
 
 class Cache:
@@ -28,7 +29,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
-    def store(self, data: str | bytes | int | float) -> str:
+    def store(self, data: Union[str, bytes, int, float]) -> str:
         """
         Stores data with a key and returns the key used
         """
