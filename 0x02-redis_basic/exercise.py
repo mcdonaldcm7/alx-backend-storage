@@ -17,7 +17,7 @@ Type-annotate 'store' correctly. Remember that 'data' can be a 'str', 'bytes',
 """
 import redis
 import uuid
-from typing import Union
+from typing import Union, Optional, Any
 
 
 class Cache:
@@ -36,3 +36,26 @@ class Cache:
         key = str(uuid.uuid4())
         self._redis.set(key, data)
         return key
+
+    def get(self, key, fn: Optional[Callable[[]]]) -> Union[Any, None]:
+        """
+        Returns the value associated with key (if any), after converting it to
+        the appropriate type using fn (if provided)
+        """
+        if self._redis.exists(key):
+            if fn is not None:
+                return fn(self._redis.get(key))
+            return self._redis.get(key)
+        return None
+
+    def get_str(self, key=str, fn=str) -> str:
+        """
+        Parametrize 'Cache.get' with the correct conversion function(str)
+        """
+        return self.get(key, fn)
+
+    def get_int(self, key=int, fn=int) -> int:
+        """
+        Parametrize 'Cache.get' with the correct conversion function(int)
+        """
+        return self.get(key, fn)
