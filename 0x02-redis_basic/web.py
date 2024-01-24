@@ -38,12 +38,12 @@ def url_calls(method: Callable) -> Callable:
     Decorator function to count calls to a 'url'
     """
     @wraps(method)
-    def wrapper(url: str):
+    def wrapper(url):
         """
         URL Counter
         """
         key = "count:{}".format(url)
-        c.incr(key)
+        cache.incr(key)
         return method(url)
     return wrapper
 
@@ -56,15 +56,15 @@ def get_page(url: str) -> str:
     count = 0
     count_key = "count:{}".format(url)
 
-    if c.exists(count_key):
-        count = c.get(key)
+    if cache.exists(count_key):
+        count = cache.get(count_key)
 
     key = "{}:{}".format(count, url)
-    if c.exists(key):
-        return c.get(key).decode('utf-8')
+    if cache.exists(key):
+        return cache.get(key).decode('utf-8')
 
     response = requests.get(url)
     html_content = response.text
-    c.store(page, html_content)
-    c._redis.expire(key, timedelta(seconds=10))
+    cache.store(page, html_content)
+    cache._redis.expire(key, timedelta(seconds=10))
     return html_content
