@@ -17,7 +17,22 @@ Type-annotate 'store' correctly. Remember that 'data' can be a 'str', 'bytes',
 """
 import redis
 import uuid
-from typing import Union, Optional, Any
+from typing import Union, Optional, Any, Callable
+from functools import wraps
+
+
+def count_calls(method: Callable[[Any], str]) -> Callable[[Any], str]:
+    """
+    Wrapper for method
+    """
+    @wraps(method)
+    def wrapper(self, data: Union[str, bytes, int, float]) -> str:
+        """
+        Increments the count for method everytime method is called
+        """
+        self._redis.incr(method.__qualname__)
+        return method(data)
+    return wrapper
 
 
 class Cache:
@@ -29,6 +44,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
+    @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """
         Stores data with a key and returns the key used
