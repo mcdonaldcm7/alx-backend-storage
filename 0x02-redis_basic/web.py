@@ -30,7 +30,7 @@ from typing import Callable
 Cache = __import__('exercise').Cache
 
 
-c = Cache()
+cache = Cache()
 
 
 def url_calls(method: Callable) -> Callable:
@@ -38,7 +38,7 @@ def url_calls(method: Callable) -> Callable:
     Decorator function to count calls to a 'url'
     """
     @wraps(method)
-    def wrapper(url: str) -> Callable:
+    def wrapper(url: str):
         """
         URL Counter
         """
@@ -53,8 +53,13 @@ def get_page(url: str) -> str:
     """
     Obtains the HTML content of a particular URL and returns it
     """
-    key = "page:{}".format(url)
+    count = 0
+    count_key = "count:{}".format(url)
 
+    if c.exists(count_key):
+        count = c.get(key)
+
+    key = "{}:{}".format(count, url)
     if c.exists(key):
         return c.get(key).decode('utf-8')
 
