@@ -45,11 +45,12 @@ def call_history(method: Callable) -> Callable:
     return wrapper
 
 
-def replay(fn: Callable):
+def replay(method: Callable) -> None:
     """
-    Display the history of calls of a particular function
+    Display the history of calls of a particular function using keys generated
+    in other functions
     """
-    method_name = fn.__qualname__
+    method_name = method.__qualname__
     key_input = "{}:inputs".format(method_name)
     key_output = "{}:outputs".format(method_name)
     cache = fn.__self__
