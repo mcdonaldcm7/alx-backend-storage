@@ -29,7 +29,6 @@ from datetime import timedelta
 Cache = __import__('exercise').Cache
 
 
-redis_instance = redis.Redis()
 c = Cache()
 
 
@@ -43,7 +42,7 @@ def url_calls(method):
         URL Counter
         """
         key = "count:{}".format(url)
-        redis_instance.incr(key)
+        c.incr(key)
         return method(url)
     return wrapper
 
