@@ -13,7 +13,7 @@ def count_calls(method: Callable) -> Callable:
     Wrapper for method
     """
     @wraps(method)
-    def wrapper(self , *args, **kwargs):
+    def wrapper(self, *args, **kwargs):
         """
         Keep count number of times method has been called
         """
@@ -45,20 +45,20 @@ def call_history(method: Callable) -> Callable:
     return wrapper
 
 
-def replay(method):
+def replay(fn: Callable):
     """
+    Display the history of calls of a particular function
     """
-    @wraps(method)
-    def wrapper(self):
-        """
-        """
-        key_input = "{}:inputs".format(method.__qualname__)
-        key_output = "{}:outputs".format(method.__qualname__)
-        inputs = self.get(key_input)
-        outputs = self.get(key_output)
-        print("Inputs are {}".format(inputs))
-        print("Outputs are {}".format(outputs))
-    return wrapper
+    method_name = fn.__qualname__
+    key_input = "{}:inputs".format(method_name)
+    key_output = "{}:outputs".format(method_name)
+    cache = fn.__self__
+    count = cache.get_int(key_input.split(":")[0])
+    print("{} was called {} times:".format(method_name, count))
+    for inp, out in zip(cache._redis.lrange(key_input, 0, -1),
+                        cache._redis.lrange(key_output, 0, -1)):
+        print("{}(*{}) -> {}".format(method_name, inp.decode("utf-8"),
+                                     out.decode("utf-8")))
 
 
 class Cache:
