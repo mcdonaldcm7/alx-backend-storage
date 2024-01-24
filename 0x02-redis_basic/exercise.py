@@ -48,13 +48,13 @@ class Cache:
             return self._redis.get(key)
         return None
 
-    def get_str(self, key=str, fn=str) -> str:
+    def get_str(self, key: str, fn=str) -> str:
         """
         Parametrize 'Cache.get' with the correct conversion function(str)
         """
         return self.get(key, fn)
 
-    def get_int(self, key=int, fn=int) -> int:
+    def get_int(self, key: str, fn=int) -> int:
         """
         Parametrize 'Cache.get' with the correct conversion function(int)
         """
