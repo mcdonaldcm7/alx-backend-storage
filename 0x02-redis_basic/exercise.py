@@ -46,7 +46,7 @@ def call_history(method: Callable) -> Callable:
     return wrapper
 
 
-def replay(method):
+def replay(method) -> None:
     """
     Display the history of calls of a particular function using keys generated
     in other functions
