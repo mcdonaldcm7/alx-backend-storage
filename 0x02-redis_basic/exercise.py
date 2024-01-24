@@ -21,7 +21,8 @@ from typing import Union, Optional, Any, Callable
 from functools import wraps
 
 
-def count_calls(method: Callable[[Any], str]) -> Callable[[Any], str]:
+def count_calls(method: Callable[[Any, Union[str, bytes, int, float]], str]
+                ) -> Callable[[Any, Union[str, bytes, int, float]], str]:
     """
     Wrapper for method
     """
