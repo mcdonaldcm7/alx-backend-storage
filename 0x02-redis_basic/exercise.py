@@ -31,7 +31,7 @@ def count_calls(method: Callable[[Any], str]) -> Callable[[Any], str]:
         Increments the count for method everytime method is called
         """
         self._redis.incr(method.__qualname__)
-        return method(data)
+        return method(self, data)
     return wrapper
 
 
