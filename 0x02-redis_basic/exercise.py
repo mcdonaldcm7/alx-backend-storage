@@ -13,7 +13,7 @@ def count_calls(method: Callable) -> Callable:
     Wrapper for method
     """
     @wraps(method)
-    def wrapper(self: "Cache", *args, **kwargs) -> str:
+    def wrapper(self: "Cache", *args, **kwargs):
         """
         Keep count number of times method has been called
         """
