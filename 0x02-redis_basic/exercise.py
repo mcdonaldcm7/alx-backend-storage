@@ -58,7 +58,7 @@ def replay(method: Callable) -> None:
     print("{} was called {} times:".format(method_name, count))
     for inp, out in zip(cache._redis.lrange(key_input, 0, -1),
                         cache._redis.lrange(key_output, 0, -1)):
-        print("{}({}) -> {}".format(method_name, inp.decode("utf-8"),
+        print("{}(*{}) -> {}".format(method_name, inp.decode("utf-8"),
                                      out.decode("utf-8")))
 
 
