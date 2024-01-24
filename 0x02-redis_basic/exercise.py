@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
-This module contains the class definition for Cache
+This module contains the definition for the Cache class and the count_calls,
+call_history, and replay function
 """
 import redis
 import uuid
-from typing import Union, Callable, Any
+from typing import Union, Callable
 from functools import wraps
 
 
@@ -45,7 +46,7 @@ def call_history(method: Callable) -> Callable:
     return wrapper
 
 
-def replay(method: Callable) -> None:
+def replay(method):
     """
     Display the history of calls of a particular function using keys generated
     in other functions
