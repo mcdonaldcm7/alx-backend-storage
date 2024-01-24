@@ -22,16 +22,16 @@ def count_calls(method: Callable) -> Callable:
     return wrapper
 
 
-def call_history(method: Callable[[Any, Union[str, bytes, int, float]], str]
-                 ) -> Callable[[Any, Union[str, bytes, int, float]], str]:
+def call_history(method: Callable) -> Callable:
     """
-    Creates and/or append the input and output of method to the list ":input"
-    and ":output" list keys respectively where the name of both list are
-    appended by the decorated function's qualified name
+    Wrapper for method
     """
     @wraps(method)
     def wrapper(self: "Cache", *args, **kwargs) -> str:
         """
+        Creates and/or append the input and output of method to the list
+        ":input" and ":output" list keys respectively where the name of both
+        list are appended by the decorated function's qualified name
         """
         key_input = "{}:inputs".format(method.__qualname__)
         key_output = "{}:outputs".format(method.__qualname__)
