@@ -46,16 +46,16 @@ def call_history(method: Callable) -> Callable:
     return wrapper
 
 
-def replay(method) -> None:
+def replay(method: Callable) -> None:
     """
     Display the history of calls of a particular function using keys generated
     in other functions
     """
-    method_name = method.__qualname__
-    key_input = "{}:inputs".format(method_name)
-    key_output = "{}:outputs".format(method_name)
+    method_name: str = method.__qualname__
+    key_input: str = "{}:inputs".format(method_name)
+    key_output: str = "{}:outputs".format(method_name)
     cache = method.__self__
-    count = cache.get_int(key_input.split(":")[0])
+    count: int = cache.get_int(key_input.split(":")[0])
     print("{} was called {} times:".format(method_name, count))
     for inp, out in zip(cache._redis.lrange(key_input, 0, -1),
                         cache._redis.lrange(key_output, 0, -1)):
