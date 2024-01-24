@@ -27,10 +27,7 @@ from datetime import timedelta
 from typing import Callable
 
 
-Cache = __import__('exercise').Cache
-
-
-cache = Cache()
+cache = redis.Redis()
 
 
 def url_calls(method: Callable) -> Callable:
@@ -65,6 +62,6 @@ def get_page(url: str) -> str:
 
     response = requests.get(url)
     html_content = response.text
-    cache.store(page, html_content)
-    cache._redis.expire(key, timedelta(seconds=10))
+    cache.set(key, html_content)
+    cache.expire(key, timedelta(seconds=10))
     return html_content
