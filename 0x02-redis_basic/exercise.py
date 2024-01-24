@@ -8,8 +8,7 @@ from typing import Union, Callable, Any
 from functools import wraps
 
 
-def count_calls(method: Callable[[Any, Union[str, bytes, int, float]], str]
-                ) -> Callable[[Any, Union[str, bytes, int, float]], str]:
+def count_calls(method: Callable) -> Callable:
     """
     Wrapper for method
     """
