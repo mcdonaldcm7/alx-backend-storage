@@ -46,23 +46,6 @@ def call_history(method: Callable) -> Callable:
     return wrapper
 
 
-def replay(method: Callable) -> None:
-    """
-    Display the history of calls of a particular function using keys generated
-    in other functions
-    """
-    method_name: str = method.__qualname__
-    key_input: str = "{}:inputs".format(method_name)
-    key_output: str = "{}:outputs".format(method_name)
-    cache = method.__self__
-    count: int = cache.get_int(key_input.split(":")[0])
-    print("{} was called {} times:".format(method_name, count))
-    for inp, out in zip(cache._redis.lrange(key_input, 0, -1),
-                        cache._redis.lrange(key_output, 0, -1)):
-        print("{}(*{}) -> {}".format(method_name, inp.decode("utf-8"),
-                                     out.decode("utf-8")))
-
-
 class Cache:
     def __init__(self) -> None:
         self._redis = redis.Redis()
@@ -104,3 +87,20 @@ class Cache:
         integer conversion function int
         """
         return self.get(key, fn)
+
+
+def replay(method: Callable) -> None:
+    """
+    Display the history of calls of a particular function using keys generated
+    in other functions
+    """
+    method_name: str = method.__qualname__
+    key_input: str = "{}:inputs".format(method_name)
+    key_output: str = "{}:outputs".format(method_name)
+    cache = method.__self__
+    count: int = cache.get_int(key_input.split(":")[0])
+    print("{} was called {} times:".format(method_name, count))
+    for inp, out in zip(cache._redis.lrange(key_input, 0, -1),
+                        cache._redis.lrange(key_output, 0, -1)):
+        print("{}(*{}) -> {}".format(method_name, inp.decode("utf-8"),
+                                     out.decode("utf-8")))
