@@ -27,7 +27,7 @@ def count_calls(method: Callable[[Any, Union[str, bytes, int, float]], str]
     Wrapper for method
     """
     @wraps(method)
-    def wrapper(self, data: Union[str, bytes, int, float]) -> str:
+    def wrapper(self: "Cache", data: Union[str, bytes, int, float]) -> str:
         """
         Increments the count for method everytime method is called
         """
