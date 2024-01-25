@@ -47,6 +47,10 @@ def call_history(method: Callable) -> Callable:
 
 
 class Cache:
+    """
+    Custom Cache class that utilizes Redis to perform operations on data such
+    as storing, retrieving, e.t.c.
+    """
     def __init__(self) -> None:
         self._redis = redis.Redis()
         self._redis.flushdb()
