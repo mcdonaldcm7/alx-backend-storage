@@ -24,14 +24,14 @@ import pymongo
 
 
 if __name__ == "__main__":
-    client = pymongo.MongoClient('mongodb://127.0.0.1:27017')
+    client = pymongo.MongoClient("mongodb://127.0.0.1:27017")
     logs_collection = client.logs.nginx
 
-    print('{} logs'.format(logs_collection.count_documents({})))
-    print('Methods:')
+    print("{} logs".format(logs_collection.count_documents({})))
+    print("Methods:")
     results = list(logs_collection.aggregate([
         {
-            '$group': {'_id': "$method", 'count': {"$sum": 1}}
+            "$group": {"_id": "$method", "count": {"$sum": 1}}
         }
     ]))
 
@@ -43,7 +43,7 @@ if __name__ == "__main__":
             method_count[r["_id"]] = r["count"]
 
     for m in method:
-        print("\tmethod ", end="")
+        print("\tmethod ", end='')
         if m in method_count:
             print("{}: {}".format(m, method_count[m]))
         else:
@@ -55,4 +55,7 @@ if __name__ == "__main__":
         ]
 
     status_check = list(logs_collection.aggregate(query))
-    print("{} status check".format(status_check[0]["count"]))
+    if len(status_check) == 0:
+        print("0 status check")
+    else:
+        print("{} status check".format(status_check[0]["count"]))
