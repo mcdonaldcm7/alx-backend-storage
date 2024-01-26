@@ -27,15 +27,12 @@ from datetime import timedelta
 from typing import Callable
 
 
-cache = redis.Redis()
-
-
 def url_calls(method: Callable) -> Callable:
     """
     Decorator function to count calls to a 'url'
     """
     @wraps(method)
-    def wrapper(url):
+    def wrapper(url: str):
         """
         URL Counter
         """
@@ -45,23 +42,33 @@ def url_calls(method: Callable) -> Callable:
     return wrapper
 
 
+def expiration_time(method: Callable) -> Callable:
+    """
+    Cache the result of count calls with an expiration time of 10 seconds
+    """
+    @wraps(method)
+    def wrapper(url: str):
+        """
+        Wrapper method
+        """
+        key = "cached_page:{}".format(url)
+        html_content = method(url)
+        cache.setex(key, 10, html_content)
+        return method(url)
+    return wrapper
+
+
 @url_calls
+@expiration_time
 def get_page(url: str) -> str:
     """
     Obtains the HTML content of a particular URL and returns it
     """
-    count = 0
-    count_key = "count:{}".format(url)
-
-    if cache.exists(count_key):
-        count = cache.get(count_key)
-
-    key = "{}:{{{}}}".format(count, url)
+    key = "cached_page:{}".format(url)
     if cache.exists(key):
         return cache.get(key).decode('utf-8')
 
     response = requests.get(url)
     html_content = response.text
-    cache.set(key, html_content)
-    cache.expire(key, timedelta(seconds=10))
+    cache.setex(key, 10, html_content)
     return html_content
