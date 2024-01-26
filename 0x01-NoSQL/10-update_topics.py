@@ -22,6 +22,6 @@ def update_topics(mongo_collection, name, topics):
     """
     _id = mongo_collection.update_many({"name": name},
                                        {"$set": {"topics": topics}},
-                                       upsert=True
+                                       upsert=False
                                        )
     return (_id.upserted_id)
