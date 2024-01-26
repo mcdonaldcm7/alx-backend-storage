@@ -44,7 +44,10 @@ if __name__ == "__main__":
         ]
 
     status_check = list(logs_collection.aggregate(status_query))
-    print("{} status check".format(status_check[0]["count"]))
+    if len(status_check) == 0:
+        print("0 status check")
+    else:
+        print("{} status check".format(status_check[0]["count"]))
 
     ip_query = [
             {
